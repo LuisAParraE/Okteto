@@ -12,7 +12,6 @@ class RegistrationController(
 ) {
 
     @PostMapping
-    @CrossOrigin(origins = ["http://localhost:13300"])
     @ResponseBody
     fun register(@RequestBody request: RegistrationRequest): ResponseEntity<Any> {
         return registrationService.register(request)
