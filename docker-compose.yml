@@ -1,0 +1,54 @@
+version: '3'
+networks:
+  styleoverflow-network:
+    driver: bridge
+
+services:
+  styleoverflow-db:
+    image: postgres:10
+    container_name: styleoverflow-db
+    privileged: true
+    environment:
+      - POSTGRES_PASSWORD=style0v3rfl0W
+    #  - POSTGRES_USER=style0
+      - POSTGRES_DB=styleOverflow
+    networks:
+      - styleoverflow-network
+    ports:
+      - 13342:5432
+    #volumes:
+    #  - './db:/var/lib/postgresql/data'
+  styleoverflow-front:
+    container_name: styleoverflow-front
+    build:
+      context: ./
+      dockerfile: ./deploy/front/Dockerfile
+    depends_on:
+      - styleoverflow-db
+    #environment:
+    #volumes:
+    #  - './frontend:/frontend'
+    #env_file:
+    networks:
+      - styleoverflow-network
+    ports:
+      - 13300:3000
+    stdin_open: true
+  styleoverflow-back:
+      container_name: styleoverflow-back
+      build:
+        context: ./
+        dockerfile: ./deploy/back/Dockerfile
+      depends_on:
+        - styleoverflow-db
+      environment:
+        - SPRING_DATASOURCE_URL=jdbc:postgresql://styleoverflow-db/styleOverflow
+      #volumes:
+      #  - './backend:/backend/'
+      #env_file:
+      networks:
+        - styleoverflow-network
+      ports:
+        - 13312:8080
+      stdin_open: true
+#volumes:
