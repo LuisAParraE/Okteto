@@ -39,7 +39,6 @@ class WebSecurityConfig(
             .anyRequest()
             .authenticated().and()
             .formLogin()
-        http.cors()
     }
 
     override fun configure(auth: AuthenticationManagerBuilder?) {
@@ -57,7 +56,9 @@ class WebSecurityConfig(
     fun corsConfigurer(): WebMvcConfigurer {
         return object : WebMvcConfigurer {
             override fun addCorsMappings(registry: CorsRegistry) {
-                registry.addMapping("/**").allowedMethods("*")
+                registry.addMapping("/**")
+                    .allowedOrigins("*")
+                    .allowedMethods("*")
                     .allowedHeaders("*")
             }
         }
