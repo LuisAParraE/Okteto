@@ -39,6 +39,7 @@ class WebSecurityConfig(
             .anyRequest()
             .authenticated().and()
             .formLogin()
+        http.cors()
     }
 
     override fun configure(auth: AuthenticationManagerBuilder?) {
