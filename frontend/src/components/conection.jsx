@@ -1,13 +1,13 @@
 import axios from 'axios'
 
-
+/*
  const api = axios.create({
      baseURL: "http://localhost:13312/api/v1"
  })
-
-/*const api = axios.create({
+*/
+const api = axios.create({
     baseURL: "https://styleoverflow-back-luisaparrae.cloud.okteto.net/api/v1"
-})*/
+})
 
 function Conection(){
 
