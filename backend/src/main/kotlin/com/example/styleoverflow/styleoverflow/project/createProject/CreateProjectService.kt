@@ -10,6 +10,9 @@ import com.example.styleoverflow.styleoverflow.validators.ProjectNameValidator
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
+/**
+ * Service Class that validates all the info for the creation of a project
+ */
 @Service
 class CreateProjectService(
     private val projectService: ProjectService,
@@ -18,7 +21,14 @@ class CreateProjectService(
     private val projectDateValidator: ProjectDateValidator,
     private val accessTokenService: AccessTokenService
 ) {
+    /**
+     * Function that receives a message and validate all the information and creates the project
+     * @param createProjectRequest A message that contains all the information needed for the creation of a project.
+     * @return A response message if the creation was successful or not.
+     */
     fun createP(createProjectRequest: CreateProjectRequest): ResponseEntity<Any> {
+
+        //VALIDATIONS
 
         val isValidToken = accessTokenService.isValidAccessTokenByString(createProjectRequest.sessionId)
 

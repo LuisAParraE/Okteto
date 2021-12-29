@@ -7,6 +7,9 @@ import lombok.AllArgsConstructor
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
+/**
+ * Service Class that validates all the info for getting a project's info.
+ */
 @Service
 @AllArgsConstructor
 class GetProjectService(
@@ -14,6 +17,11 @@ class GetProjectService(
     private val accessTokenService : AccessTokenService
 ) {
 
+    /**
+     * Function to get a list of a user's projects information separated on pages.
+     * @param getListOfProjectRequest A message with all the information needed to get the list.
+     * @return A response message with all the info of the projects or an error message.
+     */
     fun getUserP(getListOfProjectRequest: GetListOfProjectRequest): ResponseEntity<Any> {
 
         //Session Token Validation
@@ -29,6 +37,11 @@ class GetProjectService(
 
     }
 
+    /**
+     * Function to get all the information of a project.
+     * @param getProjectRequest A message with all the information needed to get the info of a project.
+     * @return A response message with all the info of the project or an error message.
+     */
     fun getP(getProjectRequest: GetProjectRequest): ResponseEntity<Any> {
 
         //Session Token Validation
@@ -42,6 +55,11 @@ class GetProjectService(
         )
     }
 
+    /**
+     * Function to get a list of projects that doesn't belong to a user, separated on pages.
+     * @param getListOfProjectRequest A message with all the information needed to get the list.
+     * @return A response message with all the info of the projects or an error message.
+     */
     fun getListP(getListOfProjectRequest: GetListOfProjectRequest): ResponseEntity<Any> {
 
         //Session Token Validation

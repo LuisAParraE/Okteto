@@ -3,6 +3,8 @@ package com.example.styleoverflow.styleoverflow.project
 import com.example.styleoverflow.styleoverflow.appuser.AppUserRepository
 import com.example.styleoverflow.styleoverflow.project.createProject.ProjectCreationToken
 import com.example.styleoverflow.styleoverflow.project.getProject.GetProjectListToken
+import com.example.styleoverflow.styleoverflow.project.getProject.GetProjectToken
+import com.example.styleoverflow.styleoverflow.task.TaskService
 import lombok.AllArgsConstructor
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -16,13 +18,18 @@ const val pageSize: Int = 3
 
 @Service
 @AllArgsConstructor
+/**
+ * Service in charge of all the interactions of the Project Class
+ */
 class ProjectService(
     private val projectRepository: ProjectRepository,
-    private val appUserRepository: AppUserRepository
+    private val appUserRepository: AppUserRepository,
+    private val taskService: TaskService
 ) {
     /**
-     * Function to create a Project, it verifies if the name already exist in DB
-     * if not, it saves the project and returns a Verification Token
+     * Function to create a Project.
+     * @param project Entity project that wants to be saved on DB
+     * @return A response message that specifies if the creation was successful or not.
      */
     fun createProject(project: Project): ResponseEntity<Any> {
         val projectExist = projectRepository
@@ -38,7 +45,8 @@ class ProjectService(
         projectRepository.save(project)
 
         val projectCreationToken = ProjectCreationToken(
-            message = "Project Succesfully Created",
+            message = "Project Successfully Created",
+            projectId = project.getId(),
             name = project.name,
             beginDate = project.beginDate,
             endDate = project.endDate
@@ -48,9 +56,11 @@ class ProjectService(
     }
 
     /**
-     * This Method change the Name of a project and/or the description, it first validates
-     * if another project has that name, after that check the owner and lastly it makes the
-     * changes, save it and send the validation token
+     * Changes some attributes of project(name or description)
+     * @param projectId The ID of the project which wants to modify
+     * @param description The new description you want to add
+     * @param ownerId ID of the user who wants to do the modification
+     * @return A response message that specifies if the modification was successful or not.
      */
     fun updateProject(projectId: Long, name: String, description: String, ownerId: Long): ResponseEntity<Any> {
 
@@ -69,9 +79,6 @@ class ProjectService(
             "Project Name Already Taken"
         }
 
-
-
-
         val project: Project = projectRepository.findById(projectId).get()
 
         project.name = name
@@ -88,8 +95,10 @@ class ProjectService(
     }
 
     /**
-     *This method is in charge of changing the status of a Project From True to False
-     * is Soft deleting the project.
+     * Changes the status of a project from active to inactive
+     * @param projectId The ID of the project which wants to delete
+     * @param ownerId ID of the user who wants to delete
+     * @return A response message that specifies if the elimination was successful or not.
      */
     fun deleteProject(projectId: Long, ownerId: Long): ResponseEntity<Any> {
 
@@ -117,7 +126,9 @@ class ProjectService(
     }
 
     /**
-     * Function to get all the information about a specific project by its Id.
+     * Function to get all the information about a specific project by its ID
+     * @param projectId The ID of the project
+     * @return A message with all the information about the project or an error message if it fails.
      */
     fun getUserProject(projectId: Long): ResponseEntity<Any> {
 
@@ -140,16 +151,23 @@ class ProjectService(
             "Project Doesn't Exist"
         }
 
+        val getProjectToken = GetProjectToken(
+            project = projectRepository.findById(projectId).get(),
+            tasks = taskService.getTaskList(projectId)
+        )
+
         return ResponseEntity(
-            projectRepository.findById(projectId).get(),
+            getProjectToken,
             HttpStatus.OK
         )
 
     }
 
     /**
-     * Function to get a list of projects that by its Owner parameter. It's divided on pages
-     * for less consume on resources by doing smaller requests.
+     * Function for finding a list of projects by its owner. It's divided on pages
+     * @param ownerId The ID of the owner of the projects
+     * @param page Which page of the PAGE type you want
+     * @return A message with all the information if is found or an error message if it fails
      */
     fun getUserProjectList(ownerId: Long, page: Int): ResponseEntity<Any> {
 
@@ -177,7 +195,10 @@ class ProjectService(
     }
 
     /**
-     * Function to get a list of projects that doesn't belong to a user by and owner.
+     * Function for finding a list of projects that doesn't belong to an owner. It's divided on pages
+     * @param ownerId The ID of the owner of the projects
+     * @param page Which page of the PAGE type you want
+     * @return A message with all the information if is found or an error message if it fails
      */
     fun getProjectList(ownerId: Long, page: Int): ResponseEntity<Any> {
 

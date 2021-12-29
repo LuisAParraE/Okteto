@@ -6,6 +6,13 @@ import lombok.EqualsAndHashCode
 import lombok.Getter
 import lombok.ToString
 
+/**
+ * Data class that specify all the attributes needed for the Delete Project Controller
+ * to accept the request
+ * @param projectId ID of the project that wants to delete
+ * @param ownerId ID of the user doing the deletion
+ * @param sessionId Session token to check if the session is active
+ */
 @Getter
 @AllArgsConstructor
 @EqualsAndHashCode

@@ -6,6 +6,16 @@ import lombok.Getter
 import lombok.ToString
 import java.time.LocalDate
 
+/**
+ * Data class that specify all the attributes needed for the Creation project Controller
+ * to accept the request
+ * @param name Name of the new project.
+ * @param description Additional information of a project.
+ * @param beginDate The beginning date of a project.
+ * @param endDate The ending date of a project.
+ * @param owner The user who creates the project.
+ * @param sessionId The session token to check if the session is active.
+ */
 @Getter
 @AllArgsConstructor
 @EqualsAndHashCode

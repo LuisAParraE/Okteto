@@ -7,6 +7,9 @@ import lombok.AllArgsConstructor
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
+/**
+ * Service Class that validates all the info for the deletion of a project
+ */
 @Service
 @AllArgsConstructor
 class DeleteProjectService (
@@ -14,8 +17,14 @@ class DeleteProjectService (
     private val accessTokenService : AccessTokenService
 
 ){
+    /**
+    * Function that receives a message and validate all the information and deletes the project
+    * @param deleteProjectRequest A message that contains all the information needed for the deletion of a project.
+    * @return A response message if the deletion was successful or not.
+    */
     fun deleteP(deleteProjectRequest: DeleteProjectRequest): ResponseEntity<Any>{
 
+        //VALIDATIONS
         val isValid = accessTokenService.isValidAccessTokenByString(deleteProjectRequest.sessionId)
 
         if (!isValid)

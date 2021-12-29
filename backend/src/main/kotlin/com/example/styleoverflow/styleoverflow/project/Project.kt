@@ -13,6 +13,16 @@ import javax.persistence.*
 @NoArgsConstructor
 @Entity
 @Table(name = "project")
+/**
+ * Represents a Project
+ * @param name Represents the name of the project
+ * @param projectDesc Represents the description(additional information) of a project
+ * @param beginDate Is the beginning date of a project
+ * @param endDate Is the ending date of a project
+ * @param owner Is the ID of the User who created the project
+ * @param projectStatus Depicts is the project is active or not (If is deleted or not)
+ * @return A project Entity.
+ */
 class Project(
     var name: String,
     @Column(
@@ -35,6 +45,9 @@ class Project(
         strategy = GenerationType.SEQUENCE,
         generator = "project_sequence"
     )
+    /**
+     * Is the ID generated for every project(UNIQUE)
+     */
     private var id: Long? = null
 
     fun getId(): Long?{

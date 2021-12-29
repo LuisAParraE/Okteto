@@ -6,6 +6,13 @@ import lombok.NoArgsConstructor
 import lombok.Setter
 import javax.persistence.*
 
+/***
+ * Class representing a task.
+ * @param name: Name of the task.
+ * @param taskDescription: Description of the task.
+ * @param projectID: id of the project the task belongs to.
+ * @param status: Status of the task.
+ */
 @Getter
 @Setter
 @EqualsAndHashCode
@@ -23,6 +30,7 @@ class TaskEntity(
     var status: TaskStatus
 
 ) {
+    // Unique id generated for every task.
     @SequenceGenerator(
         name = "task_sequence",
         sequenceName = "task_sequence",
@@ -34,4 +42,8 @@ class TaskEntity(
         generator = "task_sequence"
     )
     private var id: Long? = null
+
+    fun getId(): Long?{
+        return id
+    }
 }
