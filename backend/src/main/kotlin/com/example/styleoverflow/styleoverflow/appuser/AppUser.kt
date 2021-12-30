@@ -11,6 +11,16 @@ import org.springframework.transaction.TransactionUsageException
 import java.time.LocalDate
 import javax.persistence.*
 
+/**
+ * Represents all the information on a user.
+ * @param name The name of the user
+ * @param surname The surname of the user
+ * @param username The username used for login (UNIQUE)
+ * @param email Email associate with the user
+ * @param password The password (Encrypted) of the user
+ * @param birthdate Birthdate of the user
+ * @return An AppUser entity
+ */
 @Getter
 @Setter
 @EqualsAndHashCode
@@ -39,6 +49,9 @@ class AppUser(
     private var enable: Boolean? = null
 ) : UserDetails {
 
+    /**
+     * ID of a user (UNIQUE)
+     */
     @SequenceGenerator(
         name = "student_sequence",
         sequenceName = "student_sequence",
@@ -50,6 +63,10 @@ class AppUser(
         generator = "student_sequence"
     )
     private var id: Long? = null
+
+    fun getId() : Long? {
+        return id;
+    }
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
         val simpleGrantedAuthority = SimpleGrantedAuthority(appUserRole.name)

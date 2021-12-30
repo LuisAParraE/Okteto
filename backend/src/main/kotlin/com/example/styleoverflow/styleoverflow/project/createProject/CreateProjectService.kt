@@ -7,6 +7,7 @@ import com.example.styleoverflow.styleoverflow.project.ProjectService
 import com.example.styleoverflow.styleoverflow.validators.ProjectDateValidator
 import com.example.styleoverflow.styleoverflow.validators.ProjectDescriptionValidator
 import com.example.styleoverflow.styleoverflow.validators.ProjectNameValidator
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
@@ -44,15 +45,21 @@ class CreateProjectService(
         if (!projectDateValidator.test(createProjectRequest.beginDate, createProjectRequest.endDate))
             throw BRequestException("Fecha de Inicio o Fecha de Fin no Valida")
 
-        return projectService.createProject(
-            Project(
-                createProjectRequest.name,
-                createProjectRequest.description,
-                createProjectRequest.beginDate,
-                createProjectRequest.endDate,
-                createProjectRequest.owner,
-                true
+        val ownerId :Long? = accessTokenService.getUserFromToken(createProjectRequest.sessionId)?.getId()
+
+        ownerId?.let {
+            return projectService.createProject(
+                Project(
+                    createProjectRequest.name,
+                    createProjectRequest.description,
+                    createProjectRequest.beginDate,
+                    createProjectRequest.endDate,
+                    it,
+                    true
+                )
             )
-        )
+        }
+
+        return ResponseEntity("Null ID FOUND",HttpStatus.INTERNAL_SERVER_ERROR)
     }
 }

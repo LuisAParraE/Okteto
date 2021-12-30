@@ -13,7 +13,6 @@ import java.time.LocalDate
  * @param description Additional information of a project.
  * @param beginDate The beginning date of a project.
  * @param endDate The ending date of a project.
- * @param owner The user who creates the project.
  * @param sessionId The session token to check if the session is active.
  */
 @Getter
@@ -25,6 +24,5 @@ data class CreateProjectRequest(
     val description: String,
     val beginDate: LocalDate,
     val endDate: LocalDate,
-    val owner: Long,
     val sessionId: String
 )

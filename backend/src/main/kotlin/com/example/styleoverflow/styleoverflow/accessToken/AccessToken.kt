@@ -7,7 +7,14 @@ import lombok.Setter
 import java.time.LocalDateTime
 import javax.persistence.*
 
-
+/**
+ * Class to represent a session token for maintaining a login session.
+ * @param sessionId : Id of a login session.
+ * @param createdAt : Date and time of creation of the token.
+ * @param expiresAt : Date and time of expiration of the token.
+ * @param active : Boolean representing whether a token is active or not.
+ * @param appUser : An existing user fo
+ */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,6 +26,7 @@ class AccessToken (
     @Column(nullable = false) var active : Boolean  = true,
     @JoinColumn(nullable = false, name = "app_user_id") @ManyToOne val appUser: AppUser
 ) {
+    // Id basically only used for access token to have a primary key
     @SequenceGenerator(
         name = "confirmation_token_sequence",
         sequenceName = "confirmation_token_sequence",

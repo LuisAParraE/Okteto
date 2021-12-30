@@ -4,6 +4,7 @@ import com.example.styleoverflow.styleoverflow.accessToken.AccessTokenService
 import com.example.styleoverflow.styleoverflow.genericExceptions.BRequestException
 import com.example.styleoverflow.styleoverflow.project.ProjectService
 import lombok.AllArgsConstructor
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
@@ -30,10 +31,16 @@ class GetProjectService(
         if (!isValid)
             throw BRequestException("Invalid Token. Session Expired")
 
-        return projectService.getUserProjectList(
-            getListOfProjectRequest.ownerId,
-            getListOfProjectRequest.page
-        )
+        val ownerId :Long? = accessTokenService.getUserFromToken(getListOfProjectRequest.sessionId)?.getId()
+
+        ownerId?.let {
+            return projectService.getUserProjectList(
+                it,
+                getListOfProjectRequest.page
+            )
+        }
+
+        return ResponseEntity("NULL USER ID FOUND", HttpStatus.INTERNAL_SERVER_ERROR)
 
     }
 
@@ -68,9 +75,17 @@ class GetProjectService(
         if (!isValid)
             throw BRequestException("Invalid Token. Session Expired")
 
-        return projectService.getProjectList(
-            getListOfProjectRequest.ownerId,
-            getListOfProjectRequest.page
-        )
+        val ownerId :Long? = accessTokenService.getUserFromToken(getListOfProjectRequest.sessionId)?.getId()
+
+        ownerId?.let {
+            return projectService.getProjectList(
+                it,
+                getListOfProjectRequest.page
+            )
+        }
+
+        return ResponseEntity("NULL USER ID FOUND", HttpStatus.INTERNAL_SERVER_ERROR)
+
+
     }
 }

@@ -12,7 +12,6 @@ import lombok.ToString
  * @param projectId ID of the project that wants to update
  * @param name New name of the project(Or the same one if not have a modification)
  * @param description New description of the project(Or the same one if not have a modification)
- * @param ownerId ID of the user doing the update
  * @param sessionId Session token to check if the session is active
  */
 @Getter
@@ -23,6 +22,5 @@ data class UpdateProjectRequest (
     val projectId: Long,
     val name: String,
     val description: String,
-    val ownerId: Long,
     val sessionId : String
 )

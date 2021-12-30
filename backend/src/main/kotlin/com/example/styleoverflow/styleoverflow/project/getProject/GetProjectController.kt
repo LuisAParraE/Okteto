@@ -18,7 +18,7 @@ class GetProjectController (
      * @param getProjectRequest A message with all the information needed to get the info of a project.
      * @return A response message with all the info of the project or an error message.
      */
-    @GetMapping(path = ["/get"])
+    @PostMapping(path = ["/get"])
     @ResponseBody
     fun getProject(@RequestBody getProjectRequest: GetProjectRequest): ResponseEntity<Any>{
 
@@ -30,7 +30,7 @@ class GetProjectController (
      * @param getListOfProjectRequest A message with all the information needed to get the list.
      * @return A response message with all the info of the projects or an error message.
      */
-    @GetMapping(path = ["/get/user"])
+    @PostMapping(path = ["/get/user"])
     @ResponseBody
     fun getUserProjects(@RequestBody getListOfProjectRequest: GetListOfProjectRequest): ResponseEntity<Any>{
 
@@ -42,7 +42,7 @@ class GetProjectController (
      * @param getListOfProjectRequest A message with all the information needed to get the list.
      * @return A response message with all the info of the projects or an error message.
      */
-    @GetMapping(path = ["/get/all"])
+    @PostMapping(path = ["/get/all"])
     @ResponseBody
     fun getProjects(@RequestBody getListOfProjectRequest: GetListOfProjectRequest): ResponseEntity<Any>{
 

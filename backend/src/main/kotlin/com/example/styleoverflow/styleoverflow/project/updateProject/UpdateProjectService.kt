@@ -7,6 +7,7 @@ import com.example.styleoverflow.styleoverflow.validators.ProjectDateValidator
 import com.example.styleoverflow.styleoverflow.validators.ProjectDescriptionValidator
 import com.example.styleoverflow.styleoverflow.validators.ProjectNameValidator
 import lombok.AllArgsConstructor
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
@@ -41,12 +42,18 @@ class UpdateProjectService(
         if(!projectDescriptionValidator.test(updateProjectRequest.description))
             throw BRequestException("Descripción no Valida")
 
-        return projectService.updateProject(
-            updateProjectRequest.projectId,
-            updateProjectRequest.name,
-            updateProjectRequest.description,
-            updateProjectRequest.ownerId
-        )
+        val ownerId :Long? = accessTokenService.getUserFromToken(updateProjectRequest.sessionId)?.getId()
+
+        ownerId?.let {
+            return projectService.updateProject(
+                updateProjectRequest.projectId,
+                updateProjectRequest.name,
+                updateProjectRequest.description,
+                it
+            )
+        }
+
+        return ResponseEntity("NULL USER ID FOUND", HttpStatus.INTERNAL_SERVER_ERROR)
     }
 
 }

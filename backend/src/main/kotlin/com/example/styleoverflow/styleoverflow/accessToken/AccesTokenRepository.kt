@@ -1,26 +1,21 @@
 package com.example.styleoverflow.styleoverflow.accessToken
 
 import org.springframework.data.jpa.repository.JpaRepository
-import org.springframework.data.jpa.repository.Modifying
-import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
-import java.time.LocalDateTime
 
 
+/**
+ * Interface for comunication with an accessToken table on a DB. It handles CRUD operations.
+ */
 @Repository
 @Transactional(readOnly = true)
 interface AccessTokenRepository : JpaRepository<AccessToken, Long> {
 
+    /**
+     * Performs lookup of an accessToken provided it's related sessionId.
+     * @param session_id : id of the related session.
+     * @return : maybe an existing token.
+     */
     fun findBySessionId(session_id: String): AccessToken?
-
-/*    @Transactional
-    @Modifying
-    @Query(
-        "UPDATE AccessToken c " +
-                "SET c.confirmedAt = ?2 " +
-                "WHERE c.token = ?1"
-    )
-
-    fun updateConfirmedAt( token: String, confirmedAt: LocalDateTime ): Int*/
 }
