@@ -18,7 +18,7 @@ class DeleteProjectController(
      * @param deleteProjectRequest A message with all the information needed to delete a project.
      * @return A response message if the deletion was successful or not.
      */
-    @DeleteMapping
+    @PostMapping
     @ResponseBody
     fun deleteProject(@RequestBody deleteProjectRequest: DeleteProjectRequest): ResponseEntity<Any> {
         return deleteProjectService.deleteP(deleteProjectRequest)
