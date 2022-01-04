@@ -20,7 +20,7 @@ class DeleteTaskController(
      * @param deleteTaskRequest : Request received with necessary fields to delete a task.
      * @return : A confirmation message with relevant information about what happened.
      */
-    @DeleteMapping
+    @PostMapping
     @ResponseBody
     fun deleteTask(@RequestBody deleteTaskRequest: DeleteTaskRequest): ResponseEntity<Any>{
         return deleteTaskService.deleteTask(deleteTaskRequest)
